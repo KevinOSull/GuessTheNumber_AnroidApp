@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                processRangeButtonClicked(v);
             }
         });
     }
@@ -110,48 +110,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void setUpTenRangeButton(){
-        tenRangeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setRange(MAX_RANGE_TEN);
-
+    private void processRangeButtonClicked(View v){
+        for(int i = 0; i < rangeButtons.length; i++){
+            if(v.getId() == rangeButtons[i].getId()){
+                setRange(rangeLevels[i]);
             }
-        });
+        }
     }
-
-    private void setUpTwentyRangeButton(){
-        twentyRangeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setRange(MAX_RANGE_TWENTY);
-                System.out.println(selectedRange);
-            }
-        });
-    }
-
-    private void setUpFiftyRangeButton(){
-        fiftyRangeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setRange(MAX_RANGE_FIFTY);
-                System.out.println(selectedRange);
-            }
-        });
-    }
-
-    private void setUpHundredRangeButton(){
-        hundredRangeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setRange(MAX_RANGE_ONE_HUNDRED);
-                System.out.println(selectedRange);
-                System.out.println(randomNumber);
-            }
-        });
-    }
-
-
     private void setRange(final int RANGE_VALUE){
         selectedRange = RANGE_VALUE;
         displayRange(rangeTextView,RANGE_VALUE);
