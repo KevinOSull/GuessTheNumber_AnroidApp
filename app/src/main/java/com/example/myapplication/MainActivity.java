@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -195,27 +198,292 @@ public class MainActivity extends AppCompatActivity {
         rangeTextView = findViewById(R.id.range_number);
         randomNumberTextView = findViewById(R.id.random_number_text);
 
+        guessButton = findViewById(R.id.guess_button);
+        resetButton = findViewById(R.id.reset_button);
+        clearScreenButton = findViewById(R.id.clear_button);
+
+        levelButtons = initArray(easyLevelButton,mediumLevelButton,hardLevelButton,extremeLevelButton);
+        labels = initArray(easyTextField,mediumTextField,hardTextField,extremeHardTextField);
+        rangeButtons = initArray(tenRangeButton,twentyRangeButton,fiftyRangeButton,hundredRangeButton);
+
+    }
+    private Button[] initArray(Button...items){
+        return items;
+    }
+
+    private TextView[] initArray(TextView...items){
+        return items;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // example code for reflection and generics
+
+
+    // levelButtons = createArray(Button.class, easyLevelButton, mediumLevelButton, hardLevelButton, extremeLevelButton);
+
+    //labels = createArray(TextView.class, easyTextField, mediumTextField, hardTextField, extremeHardTextField);
+
+    //rangeButtons = createArray(Button.class, tenRangeButton, twentyRangeButton, fiftyRangeButton, hundredRangeButton);
+
+        /* initButtonArray();
+        initLabelArray();
+        initRangeButtonArray();*/
+
+   /* @SuppressWarnings("unchecked")
+    private  <T> T[]createArray(Class<T>type, T... items){
+        T[] array = (T[]) Array.newInstance(type, items.length);
+        System.arraycopy(items, 0, array, 0, items.length);
+        return array;
+    }*/
+
+    /*private void initButtonArray(){
         levelButtons = new Button[]{
                 easyLevelButton,
                 mediumLevelButton,
                 hardLevelButton,
                 extremeLevelButton};
+    }
 
+    private void initLabelArray(){
         labels = new TextView[]{
                 easyTextField,
                 mediumTextField,
                 hardTextField,
                 extremeHardTextField};
+    }
 
+    private void initRangeButtonArray(){
         rangeButtons = new Button[]{
                 tenRangeButton,
                 twentyRangeButton,
                 fiftyRangeButton,
-                hundredRangeButton
-        };
+                hundredRangeButton};
+    }*/
 
 
-    }
+    /*private <T> List<T> createList(T...items){
+        return Arrays.asList(items);
+    }*/
 
 
 
