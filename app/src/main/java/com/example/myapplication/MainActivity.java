@@ -34,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView hardTextField;
     private TextView extremeHardTextField;
 
+    private TextView errorMessagesTextField;
+    private TextView numberOfTriesTextField;
+    private TextView feedbackTextField;
+
     private String[] difficultyModes = new String[]{"Easy","Med","Hard","Ext"};
     private Button[] levelButtons;
     private Button[] rangeButtons;
@@ -103,6 +107,38 @@ public class MainActivity extends AppCompatActivity {
                 processRangeButtonClicked(v);
             }
         });
+    }
+
+    private void guessButtonActionListener(){
+        guessButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                startGame(v);
+            }
+        });
+    }
+
+    private void startGame(View v){
+        boolean isValid = isDataValid();
+        if(!isValid){
+            errorMessages();
+        }else{
+            // do something here
+            checkGuess();
+        }
+    }
+
+    private void errorMessages(){
+
+    }
+
+    private void checkGuess(){
+
+    }
+
+    public boolean isDataValid(){
+        return true;
     }
 
     private void difficultyGameActionListener(Button button){
@@ -194,6 +230,10 @@ public class MainActivity extends AppCompatActivity {
         mediumTextField = findViewById(R.id.medium_text_field);
         hardTextField = findViewById(R.id.hard_text_field);
         extremeHardTextField = findViewById(R.id.extreme_text_field);
+
+        errorMessagesTextField = findViewById(R.id.error_messages);
+        feedbackTextField = findViewById(R.id.feed_back);
+        numberOfTriesTextField = findViewById(R.id.number_of_guesses);
 
         rangeTextView = findViewById(R.id.range_number);
         randomNumberTextView = findViewById(R.id.random_number_text);
