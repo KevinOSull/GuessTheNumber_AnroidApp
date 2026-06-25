@@ -249,6 +249,10 @@ public class MainActivity extends AppCompatActivity {
         randomNumber.setText(" " + selectedRange);
     }
 
+    private void displayErrorMessages(TextView view){
+
+    }
+
 
     private void findViews(){
         easyLevelButton = findViewById(R.id.easy_button);
