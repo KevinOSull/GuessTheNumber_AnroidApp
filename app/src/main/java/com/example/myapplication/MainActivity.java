@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
         randomNumber.setText(" " + selectedRange);
     }
 
-    private void displayErrorMessages(TextView view){
+    private void displayErrorMessages(TextView view,int somenumber){
 
     }
 
