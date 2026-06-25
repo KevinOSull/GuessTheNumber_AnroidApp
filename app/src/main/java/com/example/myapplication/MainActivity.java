@@ -3,13 +3,16 @@ package com.example.myapplication;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView errorMessagesTextField;
     private TextView numberOfTriesTextField;
     private TextView feedbackTextField;
+
+    private EditText getGuess;
 
     private String[] difficultyModes = new String[]{"Easy","Med","Hard","Ext"};
     private Button[] levelButtons;
@@ -72,7 +77,10 @@ public class MainActivity extends AppCompatActivity {
     private int randomNumber;
     private int guessRange;
     private int guessRangeCount;
+
+    private int guessMin = 1;
     private int selectedRange = 0;
+
 
     private GameStatus gameStatus = GameStatus.GAME_IN_PROGRESS;
 
@@ -122,15 +130,42 @@ public class MainActivity extends AppCompatActivity {
     private void startGame(View v){
         boolean isValid = isDataValid();
         if(!isValid){
-            errorMessages();
+            getErrorChecks();
         }else{
             // do something here
             checkGuess();
         }
     }
 
-    private void errorMessages(){
+    private void getErrorChecks(){
+        Map<String,Boolean> errorMessages = new LinkedHashMap<>();
+        errorMessages.put(getMessage("emptyInput"),isInputEmpty());
+        errorMessages.put(getMessage("outOfRangeGuess"),isGuessOutOfRange());
+        errorMessages.put(getMessage("invalidNumber"),isGuessValidNumber());
+        for(Map.Entry<String,Boolean>entry:errorMessages.entrySet()){
+            if(entry.getValue()){
+                break;
+            }
+        }
+    }
 
+    private String getMessage(String message){
+        return"";
+    }
+
+    private boolean isInputEmpty(){
+        String guessText = getGuess.getText().toString();
+        return guessText.trim().isEmpty();
+    }
+
+    private boolean isGuessOutOfRange(){
+        String guessText = getGuess.getText().toString();
+        int guess = Integer.parseInt(guessText);
+        return guess < guessMin || guess > selectedRange;
+    }
+
+    private boolean isGuessValidNumber(){
+        return true;
     }
 
     private void checkGuess(){
