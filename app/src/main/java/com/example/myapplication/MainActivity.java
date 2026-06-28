@@ -132,9 +132,35 @@ public class MainActivity extends AppCompatActivity {
         if(!isValid){
             getErrorChecks();
         }else{
-            // do something here
             checkGuess();
         }
+    }
+
+    private void checkGuess(){
+        String guessText = getGuess.getText().toString();
+        int guess = Integer.parseInt(guessText);
+        Map<String,Boolean>checkGameStatus = new LinkedHashMap<>();
+        checkGameStatus.put(getMessage("youGuessedIt"),hasNumberBeenGuessed(guess));
+        checkGameStatus.put(getMessage("guessTooLow"),isNumberGuessedTooLow(guess));
+        checkGameStatus.put(getMessage("guessTooHigh"),isNumberGuessedTooHigh(guess));
+        for(Map.Entry<String,Boolean>entry:checkGameStatus.entrySet()){
+            if(entry.getValue()){
+                setGameMessage(feedbackTextField,entry.getKey());
+                break;
+            }
+        }
+    }
+
+    private boolean hasNumberBeenGuessed(int guess){
+        return guess == randomNumber;
+    }
+
+    private boolean isNumberGuessedTooHigh(int guess){
+        return guess > randomNumber;
+    }
+
+    private boolean isNumberGuessedTooLow(int guess){
+        return guess < randomNumber;
     }
 
     private void getErrorChecks(){
@@ -144,13 +170,33 @@ public class MainActivity extends AppCompatActivity {
         errorMessages.put(getMessage("invalidNumber"),isGuessValidNumber());
         for(Map.Entry<String,Boolean>entry:errorMessages.entrySet()){
             if(entry.getValue()){
+                setGameMessage(errorMessagesTextField,entry.getKey());
                 break;
             }
         }
     }
 
     private String getMessage(String message){
-        return"";
+        switch(message){
+            case "emptyInput":
+                return String.format("YOU MUST ENTER A GUESS!!");
+
+            case "outOfRangeGuess":
+                return String.format("GUESS IS OUT OF RANGE OF SELECTED RANGE SELECTED!");
+
+            case "invalidNumber":
+                return String.format("NUMBERS ONLY! NO LETTERS OR SYMBOLS!!!");
+
+            case "youGuessIt":
+
+            case "guessTooLow":
+
+            case "guessTooHigh":
+
+
+            default:
+        }
+        return message;
     }
 
     private boolean isInputEmpty(){
@@ -168,9 +214,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void checkGuess(){
 
-    }
 
     public boolean isDataValid(){
         return true;
@@ -249,8 +293,9 @@ public class MainActivity extends AppCompatActivity {
         randomNumber.setText(" " + selectedRange);
     }
 
-    private void displayErrorMessages(TextView view){
-
+    private TextView setGameMessage(TextView view,String message){
+        view.setText(message);
+        return view;
     }
 
 
