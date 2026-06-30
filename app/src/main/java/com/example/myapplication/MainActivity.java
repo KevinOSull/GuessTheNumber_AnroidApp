@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int guessMin = 1;
     private int selectedRange = 0;
+    private Runnable clearLastTask;
 
 
     private GameStatus gameStatus = GameStatus.GAME_IN_PROGRESS;
@@ -89,10 +92,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViews();
-        //displayRandomNumber();
         if(gameStatus == GameStatus.GAME_IN_PROGRESS){
+            guessButtonActionListener();
             initializeDifficultyButtonListeners();
             initializeRangeButtonListeners();
+            resetButtonActionListener();
+            clearButtonActionListener();
+
         }
     }
 
@@ -117,22 +123,71 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void guessButtonActionListener(){
-        guessButton.setOnClickListener(new View.OnClickListener(){
-
+    private void clearButtonActionListener(){
+        clearScreenButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                clearButton();
+            }
+        });
+    }
+
+    private void resetButtonActionListener(){
+        resetButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                resetButton();
+            }
+        });
+    }
+
+    private void guessButtonActionListener(){
+        guessButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                System.out.println("you clicked me ");
                 startGame(v);
             }
         });
     }
 
+    private void clearButton(){
+
+    }
+
+    private void resetButton(){
+
+    }
     private void startGame(View v){
         boolean isValid = isDataValid();
         if(!isValid){
             getErrorChecks();
         }else{
             checkGuess();
+        }
+    }
+
+    public boolean isDataValid(){
+        String guessText = getGuess.getText().toString();
+        if(guessText.trim().isEmpty()){
+            return false;
+        }
+
+        if(isGuessOutOfRange(guessText)){
+            return false;
+        }
+
+        if(tryParseGuess(guessText) == null){
+            return false;
+        }
+        return true;
+    }
+
+    private Integer tryParseGuess(String text) {
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            return null;
         }
     }
 
@@ -146,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
         for(Map.Entry<String,Boolean>entry:checkGameStatus.entrySet()){
             if(entry.getValue()){
                 setGameMessage(feedbackTextField,entry.getKey());
+                showTemporaryMessage(feedbackTextField);
                 break;
             }
         }
@@ -164,17 +220,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getErrorChecks(){
+        String guessText = getGuess.getText().toString();
         Map<String,Boolean> errorMessages = new LinkedHashMap<>();
         errorMessages.put(getMessage("emptyInput"),isInputEmpty());
-        errorMessages.put(getMessage("outOfRangeGuess"),isGuessOutOfRange());
+        errorMessages.put(getMessage("outOfRangeGuess"),isGuessOutOfRange(guessText));
         errorMessages.put(getMessage("invalidNumber"),isGuessValidNumber());
         for(Map.Entry<String,Boolean>entry:errorMessages.entrySet()){
             if(entry.getValue()){
                 setGameMessage(errorMessagesTextField,entry.getKey());
+                showTemporaryMessage(errorMessagesTextField);
                 break;
             }
         }
     }
+
+    private void showTemporaryMessage(TextView textView) {
+        textView.removeCallbacks(clearLastTask);
+        clearLastTask = new Runnable() {
+            @Override
+            public void run() {
+                textView.setText("");
+            }
+        };
+        textView.postDelayed(clearLastTask,3000);
+    }
+
+
+    /*private void showTemporaryMessage(TextView textView){
+        textView.postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                textView.setText("");
+            }
+        },5000);
+    }*/
 
     private String getMessage(String message){
         switch(message){
@@ -188,13 +267,13 @@ public class MainActivity extends AppCompatActivity {
                 return String.format("NUMBERS ONLY! NO LETTERS OR SYMBOLS!!!");
 
             case "youGuessIt":
+                return String.format("YOU GOT IT!");
 
             case "guessTooLow":
+                return String.format("GUESS IS TO LOW!");
 
             case "guessTooHigh":
-
-
-            default:
+                return String.format("GUESS IS TO HIGH! ");
         }
         return message;
     }
@@ -204,22 +283,14 @@ public class MainActivity extends AppCompatActivity {
         return guessText.trim().isEmpty();
     }
 
-    private boolean isGuessOutOfRange(){
-        String guessText = getGuess.getText().toString();
-        int guess = Integer.parseInt(guessText);
-        return guess < guessMin || guess > selectedRange;
+    private boolean isGuessOutOfRange(String guessText){
+        Integer guess = tryParseGuess(guessText);
+        return guess == null || guess < guessMin || guess > selectedRange;
     }
 
     private boolean isGuessValidNumber(){
         return true;
     }
-
-
-
-    public boolean isDataValid(){
-        return true;
-    }
-
     private void difficultyGameActionListener(Button button){
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -238,7 +309,10 @@ public class MainActivity extends AppCompatActivity {
     private void setRange(final int RANGE_VALUE){
         selectedRange = RANGE_VALUE;
         displayRange(rangeTextView,RANGE_VALUE);
-        randomNumber = getRandomNumber(selectedRange);
+        //randomNumber = getRandomNumber(selectedRange);
+        displayRandomNumber();
+        System.out.println(selectedRange);
+        System.out.println(randomNumber);
         lockInGuessingRange();
     }
 
@@ -325,6 +399,8 @@ public class MainActivity extends AppCompatActivity {
         guessButton = findViewById(R.id.guess_button);
         resetButton = findViewById(R.id.reset_button);
         clearScreenButton = findViewById(R.id.clear_button);
+
+        getGuess = findViewById(R.id.edit_text_guess);
 
         levelButtons = initArray(easyLevelButton,mediumLevelButton,hardLevelButton,extremeLevelButton);
         labels = initArray(easyTextField,mediumTextField,hardTextField,extremeHardTextField);
