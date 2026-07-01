@@ -355,7 +355,7 @@
         android:gravity="center">
 
         <ImageView
-            android:id="@+id/image_view"
+            android:id="@+id/image_game_result_view"
             android:layout_width="220dp"
             android:layout_height="220dp"
             android:paddingTop="30dp"
