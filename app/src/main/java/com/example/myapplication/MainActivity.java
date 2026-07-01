@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,35 +43,37 @@ public class MainActivity extends AppCompatActivity {
     private TextView errorMessagesTextField;
     private TextView numberOfTriesTextField;
     private TextView feedbackTextField;
+    private ImageView winnerStateImage;
 
     private EditText getGuess;
 
-    private String[] difficultyModes = new String[]{"Easy","Med","Hard","Ext"};
     private Button[] levelButtons;
     private Button[] rangeButtons;
     private TextView[] labels;
 
-    private String[] numberRangeModes = new String[]{"1-10","1-20","1-50","100"};
+    private int[] gameImages = new int[]{R.drawable.trophy,R.drawable.loser};
+    private int[] winnerImages = new int[]{R.drawable.trophy,R.drawable.winner2};
+    private int[] loserImages = new int[]{R.drawable.loser,R.drawable.loser2};
+    private String[] difficultyModes = new String[]{"Easy","Med","Hard","Ext"};
+    private int[] rangeLevels = new int[]{MAX_RANGE_TEN,MAX_RANGE_TWENTY,MAX_RANGE_FIFTY,MAX_RANGE_ONE_HUNDRED};
+    private int[] difficultyLevels = new int[]{EASY_GAME_MODE,MEDIUM_GAME_MODE,HARD_GAME_MODE,EXTREME_HARD_GAME_MODE};
+    private int[] buttonDifficultyLevels = new int[]{BUTTON_ONE,BUTTON_TWO,BUTTON_THREE,BUTTON_FOUR};
+
     private static final Random RAND_GENERATOR = new Random();
     private static final int MAX_RANGE_TEN = 10;
     private static final int MAX_RANGE_TWENTY = 20;
     private static final int MAX_RANGE_FIFTY = 50;
     private static final int MAX_RANGE_ONE_HUNDRED = 100;
 
-    private int[] rangeLevels = new int[]{MAX_RANGE_TEN,MAX_RANGE_TWENTY,MAX_RANGE_FIFTY,MAX_RANGE_ONE_HUNDRED};
-
     private static final int EASY_GAME_MODE = 15;
     private static final int MEDIUM_GAME_MODE = 10;
     private static final int HARD_GAME_MODE = 5;
     private static final int EXTREME_HARD_GAME_MODE = 3;
-
-    private int[] difficultyLevels = new int[]{EASY_GAME_MODE,MEDIUM_GAME_MODE,HARD_GAME_MODE,EXTREME_HARD_GAME_MODE};
-
     private static final int BUTTON_ONE = 1;
     private static final int BUTTON_TWO = 2;
     private static final int BUTTON_THREE = 3;
     private static final int BUTTON_FOUR = 4;
-    private int[] buttonDifficultyLevels = new int[]{BUTTON_ONE,BUTTON_TWO,BUTTON_THREE,BUTTON_FOUR};
+
     private int buttonId;
     private int guessCount = 0;
     private int level;
@@ -370,6 +373,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView setGameMessage(TextView view,String message){
         view.setText(message);
         return view;
+    }
+
+    private int getRandomImage(){
+        return 0;
     }
 
 
