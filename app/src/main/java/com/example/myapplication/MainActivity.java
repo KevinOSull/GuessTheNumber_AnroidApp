@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView errorMessagesTextField;
     private TextView numberOfTriesTextField;
     private TextView feedbackTextField;
-    private ImageView winnerStateImage;
+    private ImageView gameResultImageView;
 
     private EditText getGuess;
 
@@ -408,6 +408,8 @@ public class MainActivity extends AppCompatActivity {
         clearScreenButton = findViewById(R.id.clear_button);
 
         getGuess = findViewById(R.id.edit_text_guess);
+
+        gameResultImageView = findViewById(R.id.image_game_result_view);
 
         levelButtons = initArray(easyLevelButton,mediumLevelButton,hardLevelButton,extremeLevelButton);
         labels = initArray(easyTextField,mediumTextField,hardTextField,extremeHardTextField);
