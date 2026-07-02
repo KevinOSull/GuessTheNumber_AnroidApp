@@ -379,25 +379,22 @@ public class MainActivity extends AppCompatActivity {
         return RAND_GENERATOR.nextInt(arr.length);
     }
 
-    private int checkIfImagesArrayIsEmpty(int[]arr){
+    private int decideWhichImageToUse(int[]arr){
         if(arr.length == 0){
             return R.drawable.fallbackimage;
         }else{
-            getImage(arr);
+            return getImage(arr);
         }
     }
 
     private int getImage(int[]arr){
-        /*if(arr.length == 0){
-            return 0;
-        }*/
         int random = RAND_GENERATOR.nextInt(arr.length);
         int selectedImage = arr[random];
         return selectedImage;
     }
 
-    private void displayEndGameImage(){
-
+    private void displayEndGameImage(int imageId){
+        gameResultImageView.setImageResource(imageId);
     }
 
 
