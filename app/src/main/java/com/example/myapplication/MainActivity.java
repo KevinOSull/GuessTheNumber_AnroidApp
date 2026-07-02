@@ -375,8 +375,29 @@ public class MainActivity extends AppCompatActivity {
         return view;
     }
 
-    private int getRandomImage(){
-        return 0;
+    private int getRandomImage(int[]arr){
+        return RAND_GENERATOR.nextInt(arr.length);
+    }
+
+    private int checkIfImagesArrayIsEmpty(int[]arr){
+        if(arr.length == 0){
+            return R.drawable.fallbackimage;
+        }else{
+            getImage(arr);
+        }
+    }
+
+    private int getImage(int[]arr){
+        /*if(arr.length == 0){
+            return 0;
+        }*/
+        int random = RAND_GENERATOR.nextInt(arr.length);
+        int selectedImage = arr[random];
+        return selectedImage;
+    }
+
+    private void displayEndGameImage(){
+
     }
 
 
