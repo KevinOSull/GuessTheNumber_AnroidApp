@@ -375,9 +375,9 @@ public class MainActivity extends AppCompatActivity {
         return view;
     }
 
-    private int getRandomImage(int[]arr){
+    /*private int getRandomImage(int[]arr){
         return RAND_GENERATOR.nextInt(arr.length);
-    }
+    }*/
 
     private int decideWhichImageToUse(int[]arr){
         if(arr.length == 0){
@@ -395,6 +395,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayEndGameImage(int imageId){
         gameResultImageView.setImageResource(imageId);
+    }
+
+    private void updateUi(){
+
     }
 
 
