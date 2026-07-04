@@ -419,6 +419,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkTurns(){
+        // CHECK HOW MANY TURNS LEFT
 
     }
 
