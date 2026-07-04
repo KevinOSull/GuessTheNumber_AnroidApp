@@ -397,9 +397,31 @@ public class MainActivity extends AppCompatActivity {
         gameResultImageView.setImageResource(imageId);
     }
 
-    private void updateUi(){
+    private void upDateUi(String message,int guess){
+        if(hasNumberBeenGuessed(guess)){
+            randomNumberTextView.setVisibility(View.VISIBLE);
+            randomNumberTextView.setText(String.valueOf(randomNumber));
+            howManyGuesses();
+            displayRandomNumber();
+        }else{
+            guessCount++;
+            upDateGame();
+        }
+    }
+
+    private void howManyGuesses(){
 
     }
+
+    private void upDateGame(){
+        level--;
+
+    }
+
+    private void checkTurns(){
+
+    }
+
 
 
     private void findViews(){
