@@ -206,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
             if(entry.getValue()){
                 setGameMessage(feedbackTextField,entry.getKey());
                 showTemporaryMessage(feedbackTextField);
+                upDateUi(guess);
                 break;
             }
         }
@@ -398,7 +399,7 @@ public class MainActivity extends AppCompatActivity {
         gameResultImageView.setImageResource(imageId);
     }
 
-    private void upDateUi(String message,int guess){
+    private void upDateUi(int guess){
         if(hasNumberBeenGuessed(guess)){
             randomNumberTextView.setVisibility(View.VISIBLE);
             randomNumberTextView.setText(String.valueOf(randomNumber));
@@ -411,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void howManyGuesses(){
-
+        numberOfTriesTextField.setText("It took you " + guessCount + " number of guesses! ");
     }
 
     private void upDateGame(){
