@@ -86,9 +86,10 @@ public class MainActivity extends AppCompatActivity {
     private int guessMin = 1;
     private int selectedRange = 0;
     private Runnable clearLastTask;
-
+    //private GameStatus gameStatus;
 
     private GameStatus gameStatus = GameStatus.GAME_IN_PROGRESS;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -415,11 +416,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void upDateGame(){
         level--;
-
+        numberOfTriesTextField.setText(String.valueOf(level));
+        checkTurns();
     }
 
     private void checkTurns(){
-        // CHECK HOW MANY TURNS LEFT
+        if(level == 0){
+            gameStatus = GameStatus.GAME_OVER;
+            level = 0;
+        }
 
     }
 
