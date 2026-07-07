@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private Button[] levelButtons;
     private Button[] rangeButtons;
     private TextView[] labels;
+    private TextView difficultySelected;
 
     private int[] gameImages = new int[]{R.drawable.trophy,R.drawable.loser};
     private int[] winnerImages = new int[]{R.drawable.trophy,R.drawable.winner2};
@@ -326,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
             if(v.getId() == levelButtons[i].getId()){
                 buttonId = buttonDifficultyLevels[i];
                 selectedMode = difficultyModes[i];
+
             }
         }
         turns = processButtonClicked();
@@ -337,7 +339,9 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < buttonDifficultyLevels.length; i++){
             if(buttonId == buttonDifficultyLevels[i]) {
                 level = difficultyLevels[i];
-                setNumberOfGuesses(labels[i], difficultyLevels[i]);
+                difficultySelected = labels[i];
+                //setNumberOfGuesses(labels[i], difficultyLevels[i]);
+                setNumberOfGuesses(difficultySelected,difficultyLevels[i]);
             }
         }
         return buttonId;
@@ -417,14 +421,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void upDateGame(){
         level--;
-        numberOfTriesTextField.setText(String.valueOf(level));
+        difficultySelected.setText(String.valueOf(level));
         checkTurns();
     }
 
     private void checkTurns(){
         if(level == 0){
             gameStatus = GameStatus.GAME_OVER;
-            level = 0;
+            resetButton();
+            randomNumber = getRandomNumber(selectedRange);
         }
 
     }
