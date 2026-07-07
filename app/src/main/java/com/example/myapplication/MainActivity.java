@@ -103,7 +103,9 @@ public class MainActivity extends AppCompatActivity {
             initializeRangeButtonListeners();
             resetButtonActionListener();
             clearButtonActionListener();
-
+            guessButton.setEnabled(false);
+            clearScreenButton.setEnabled(false);
+            resetButton.setEnabled(false);
         }
     }
 
@@ -161,6 +163,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void resetButton(){
+        easyLevelButton.setEnabled(true);
+        mediumLevelButton.setEnabled(true);
+        hardLevelButton.setEnabled(true);
+        extremeLevelButton.setEnabled(true);
+        turns = 0;
+        guessCount = 0;
+        guessButton.setEnabled(false);
+        clearScreenButton.setEnabled(false);
+        resetButton.setEnabled(false);
 
     }
     private void startGame(View v){
@@ -358,6 +369,9 @@ public class MainActivity extends AppCompatActivity {
         twentyRangeButton.setEnabled(false);
         fiftyRangeButton.setEnabled(false);
         hundredRangeButton.setEnabled(false);
+        guessButton.setEnabled(true);
+        clearScreenButton.setEnabled(true);
+        resetButton.setEnabled(true);
     }
 
     private void setNumberOfGuesses(TextView guessingRange,int guessNumberRange){
@@ -431,10 +445,7 @@ public class MainActivity extends AppCompatActivity {
             resetButton();
             randomNumber = getRandomNumber(selectedRange);
         }
-
     }
-
-
 
     private void findViews(){
         easyLevelButton = findViewById(R.id.easy_button);
