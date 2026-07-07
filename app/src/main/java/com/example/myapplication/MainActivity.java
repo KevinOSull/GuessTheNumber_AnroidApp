@@ -31,27 +31,21 @@ public class MainActivity extends AppCompatActivity {
     private Button resetButton;
     private Button clearScreenButton;
     private Button guessButton;
-
     private TextView rangeTextView;
     private TextView randomNumberTextView;
-
     private TextView easyTextField;
     private TextView mediumTextField;
     private TextView hardTextField;
     private TextView extremeHardTextField;
-
     private TextView errorMessagesTextField;
     private TextView numberOfTriesTextField;
     private TextView feedbackTextField;
     private ImageView gameResultImageView;
-
     private EditText getGuess;
-
     private Button[] levelButtons;
     private Button[] rangeButtons;
     private TextView[] labels;
     private TextView difficultySelected;
-
     private int[] gameImages = new int[]{R.drawable.trophy,R.drawable.loser};
     private int[] winnerImages = new int[]{R.drawable.trophy,R.drawable.winner2};
     private int[] loserImages = new int[]{R.drawable.loser,R.drawable.loser2};
@@ -65,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int MAX_RANGE_TWENTY = 20;
     private static final int MAX_RANGE_FIFTY = 50;
     private static final int MAX_RANGE_ONE_HUNDRED = 100;
-
     private static final int EASY_GAME_MODE = 15;
     private static final int MEDIUM_GAME_MODE = 10;
     private static final int HARD_GAME_MODE = 5;
@@ -79,18 +72,13 @@ public class MainActivity extends AppCompatActivity {
     private int guessCount = 0;
     private int level;
     private int turns;
-    private String selectedMode;
     private int randomNumber;
     private int guessRange;
     private int guessRangeCount;
-
     private int guessMin = 1;
     private int selectedRange = 0;
     private Runnable clearLastTask;
-    //private GameStatus gameStatus;
-
     private GameStatus gameStatus = GameStatus.GAME_IN_PROGRESS;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         findViews();
         if(gameStatus == GameStatus.GAME_IN_PROGRESS){
+            gameResultImageView.setVisibility(View.INVISIBLE);
             guessButtonActionListener();
             initializeDifficultyButtonListeners();
             initializeRangeButtonListeners();
@@ -108,19 +97,16 @@ public class MainActivity extends AppCompatActivity {
             resetButton.setEnabled(false);
         }
     }
-
     private void initializeDifficultyButtonListeners(){
         for(int i = 0; i < levelButtons.length; i++){
             difficultyGameActionListener(levelButtons[i]);
         }
     }
-
     private void initializeRangeButtonListeners(){
        for(int i = 0; i < rangeButtons.length; i++){
            rangeButtonActionListener(rangeButtons[i]);
        }
     }
-
     private void rangeButtonActionListener(Button button){
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -337,8 +323,6 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < levelButtons.length; i++){
             if(v.getId() == levelButtons[i].getId()){
                 buttonId = buttonDifficultyLevels[i];
-                selectedMode = difficultyModes[i];
-
             }
         }
         turns = processButtonClicked();
@@ -351,7 +335,6 @@ public class MainActivity extends AppCompatActivity {
             if(buttonId == buttonDifficultyLevels[i]) {
                 level = difficultyLevels[i];
                 difficultySelected = labels[i];
-                //setNumberOfGuesses(labels[i], difficultyLevels[i]);
                 setNumberOfGuesses(difficultySelected,difficultyLevels[i]);
             }
         }
