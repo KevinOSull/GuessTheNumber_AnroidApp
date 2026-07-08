@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
         imageView.removeCallbacks(clearLastImage);
         clearLastImage = new Runnable(){
             public void run(){
-                imageView.setVisibility(View.VISIBLE);
+                imageView.setVisibility(View.INVISIBLE);
             }
         };
         imageView.postDelayed(clearLastImage,5000);
@@ -420,6 +420,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void upDateUi(int guess){
         if(hasNumberBeenGuessed(guess)){
+            gameStatus = GameStatus.GAME_OVER;
+            int winnerImage = decideWhichImageToUse(winnerImages);
+            displayEndGameImage(winnerImage);
+            showTemporaryImage(gameResultImageView);
             randomNumberTextView.setVisibility(View.VISIBLE);
             randomNumberTextView.setText(String.valueOf(randomNumber));
             howManyGuesses();
