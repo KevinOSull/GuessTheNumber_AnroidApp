@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private int guessMin = 1;
     private int selectedRange = 0;
     private Runnable clearLastTask;
+    private Runnable clearLastImage;
     private GameStatus gameStatus = GameStatus.GAME_IN_PROGRESS;
 
     @Override
@@ -153,11 +154,17 @@ public class MainActivity extends AppCompatActivity {
         mediumLevelButton.setEnabled(true);
         hardLevelButton.setEnabled(true);
         extremeLevelButton.setEnabled(true);
+        tenRangeButton.setEnabled(true);
+        twentyRangeButton.setEnabled(true);
+        fiftyRangeButton.setEnabled(true);
+        hundredRangeButton.setEnabled(true);
         turns = 0;
         guessCount = 0;
         guessButton.setEnabled(false);
         clearScreenButton.setEnabled(false);
         resetButton.setEnabled(false);
+        difficultySelected.setText("");
+
 
     }
     private void startGame(View v){
@@ -246,6 +253,16 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         textView.postDelayed(clearLastTask,3000);
+    }
+
+    private void showTemporaryImage(ImageView imageView){
+        imageView.removeCallbacks(clearLastImage);
+        clearLastImage = new Runnable(){
+            public void run(){
+                imageView.setVisibility(View.VISIBLE);
+            }
+        };
+        imageView.postDelayed(clearLastImage,5000);
     }
 
 
@@ -398,6 +415,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayEndGameImage(int imageId){
         gameResultImageView.setImageResource(imageId);
+        gameResultImageView.setVisibility(View.VISIBLE);
     }
 
     private void upDateUi(int guess){
@@ -425,8 +443,12 @@ public class MainActivity extends AppCompatActivity {
     private void checkTurns(){
         if(level == 0){
             gameStatus = GameStatus.GAME_OVER;
+            int loserImage = decideWhichImageToUse(loserImages);
+            displayEndGameImage(loserImage);
             resetButton();
             randomNumber = getRandomNumber(selectedRange);
+            showTemporaryImage(gameResultImageView);
+
         }
     }
 
