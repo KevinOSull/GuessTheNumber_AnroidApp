@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         for(Map.Entry<String,Boolean>entry:checkGameStatus.entrySet()){
             if(entry.getValue()){
                 setGameMessage(feedbackTextField,entry.getKey());
-                showTemporaryMessage(feedbackTextField);
+                showTemporaryMessage(feedbackTextField,3000);
                 upDateUi(guess);
                 break;
             }
@@ -238,13 +238,13 @@ public class MainActivity extends AppCompatActivity {
         for(Map.Entry<String,Boolean>entry:errorMessages.entrySet()){
             if(entry.getValue()){
                 setGameMessage(errorMessagesTextField,entry.getKey());
-                showTemporaryMessage(errorMessagesTextField);
+                showTemporaryMessage(errorMessagesTextField,3000);
                 break;
             }
         }
     }
 
-    private void showTemporaryMessage(TextView textView) {
+    private void showTemporaryMessage(TextView textView,int duration) {
         textView.removeCallbacks(clearLastTask);
         clearLastTask = new Runnable() {
             @Override
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                 textView.setText("");
             }
         };
-        textView.postDelayed(clearLastTask,3000);
+        textView.postDelayed(clearLastTask,duration);
     }
 
     private void showTemporaryImage(ImageView imageView){
@@ -316,6 +316,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 turns = setGameDifficulty(v);
                 turns = level;
+                gameStatus = GameStatus.GAME_IN_PROGRESS;
             }
         });
     }
@@ -420,18 +421,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void upDateUi(int guess){
         if(hasNumberBeenGuessed(guess)){
-            gameStatus = GameStatus.GAME_OVER;
-            int winnerImage = decideWhichImageToUse(winnerImages);
-            displayEndGameImage(winnerImage);
-            showTemporaryImage(gameResultImageView);
-            randomNumberTextView.setVisibility(View.VISIBLE);
-            randomNumberTextView.setText(String.valueOf(randomNumber));
-            howManyGuesses();
-            displayRandomNumber();
+            endGameResults();
         }else{
             guessCount++;
             upDateGame();
         }
+    }
+    private void endGameResults(){
+        randomNumberTextView.setVisibility(View.VISIBLE);
+        randomNumberTextView.setText(String.valueOf(randomNumber));
+        showTemporaryMessage(randomNumberTextView,4000);
+        howManyGuesses();
+        gameStatus = GameStatus.GAME_OVER;
+        int winnerImage = decideWhichImageToUse(winnerImages);
+        displayEndGameImage(winnerImage);
+        showTemporaryImage(gameResultImageView);
+        resetButton();
+        displayRandomNumber();
     }
 
     private void howManyGuesses(){
@@ -449,10 +455,9 @@ public class MainActivity extends AppCompatActivity {
             gameStatus = GameStatus.GAME_OVER;
             int loserImage = decideWhichImageToUse(loserImages);
             displayEndGameImage(loserImage);
+            showTemporaryImage(gameResultImageView);
             resetButton();
             randomNumber = getRandomNumber(selectedRange);
-            showTemporaryImage(gameResultImageView);
-
         }
     }
 
