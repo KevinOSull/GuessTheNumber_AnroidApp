@@ -426,17 +426,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void endGameResults(){
+        gameStatus = GameStatus.GAME_OVER;
+        revealRandomNumber();
+        displayOutcomeVisuals();
+        resetButton();
+        displayRandomNumber();
+    }
+
+    private void revealRandomNumber(){
         randomNumberTextView.setVisibility(View.VISIBLE);
         randomNumberTextView.setText(String.valueOf(randomNumber));
-        clearNumberOfTriesRunnable = showTemporaryMessage(numberOfTriesTextField,4000,clearNumberOfTriesRunnable);
-        clearRandomNumberTask = showTemporaryMessage(randomNumberTextView,4000,clearRandomNumberTask);
         howManyGuesses();
-        gameStatus = GameStatus.GAME_OVER;
+        clearNumberOfTriesRunnable  = showTemporaryMessage(numberOfTriesTextField,4000,clearNumberOfTriesRunnable);
+        clearRandomNumberTask = showTemporaryMessage(randomNumberTextView,4000,clearRandomNumberTask);
+    }
+
+    private void displayOutcomeVisuals(){
         int winnerImage = decideWhichImageToUse(winnerImages);
         displayEndGameImage(winnerImage);
         showTemporaryImage(gameResultImageView);
-        resetButton();
-        displayRandomNumber();
     }
 
     private void howManyGuesses(){
