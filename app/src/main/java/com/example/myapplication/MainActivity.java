@@ -79,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
     private int selectedRange = 0;
     private Runnable clearLastTask;
     private Runnable clearLastImage;
+
+    private Runnable clearFeedBackTask;
+    private Runnable clearRandomNumberTask;
+    private Runnable clearErrorTask;
+    private Runnable clearNumberOfTriesRunnable;
     private GameStatus gameStatus = GameStatus.GAME_IN_PROGRESS;
 
     @Override
@@ -146,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clearButton(){
-
+        getGuess.setText("");
     }
 
     private void resetButton(){
@@ -164,8 +169,8 @@ public class MainActivity extends AppCompatActivity {
         clearScreenButton.setEnabled(false);
         resetButton.setEnabled(false);
         difficultySelected.setText("");
-
-
+        rangeTextView.setText("");
+        getGuess.setText("");
     }
     private void startGame(View v){
         boolean isValid = isDataValid();
@@ -210,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         for(Map.Entry<String,Boolean>entry:checkGameStatus.entrySet()){
             if(entry.getValue()){
                 setGameMessage(feedbackTextField,entry.getKey());
-                showTemporaryMessage(feedbackTextField,3000);
+                clearFeedBackTask = showTemporaryMessage(feedbackTextField,3000,clearFeedBackTask);
                 upDateUi(guess);
                 break;
             }
@@ -238,21 +243,24 @@ public class MainActivity extends AppCompatActivity {
         for(Map.Entry<String,Boolean>entry:errorMessages.entrySet()){
             if(entry.getValue()){
                 setGameMessage(errorMessagesTextField,entry.getKey());
-                showTemporaryMessage(errorMessagesTextField,3000);
+                clearErrorTask = showTemporaryMessage(errorMessagesTextField,3000,clearErrorTask);
                 break;
             }
         }
     }
 
-    private void showTemporaryMessage(TextView textView,int duration) {
-        textView.removeCallbacks(clearLastTask);
-        clearLastTask = new Runnable() {
+    private Runnable showTemporaryMessage(TextView textView,int duration, Runnable runnable){
+        if(runnable != null){
+            textView.removeCallbacks(runnable);
+        }
+        Runnable newTask = new Runnable() {
             @Override
             public void run() {
                 textView.setText("");
             }
         };
-        textView.postDelayed(clearLastTask,duration);
+        textView.postDelayed(newTask,duration);
+        return newTask;
     }
 
     private void showTemporaryImage(ImageView imageView){
@@ -265,16 +273,6 @@ public class MainActivity extends AppCompatActivity {
         imageView.postDelayed(clearLastImage,5000);
     }
 
-
-    /*private void showTemporaryMessage(TextView textView){
-        textView.postDelayed(new Runnable(){
-            @Override
-            public void run() {
-                textView.setText("");
-            }
-        },5000);
-    }*/
-
     private String getMessage(String message){
         switch(message){
             case "emptyInput":
@@ -286,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
             case "invalidNumber":
                 return String.format("NUMBERS ONLY! NO LETTERS OR SYMBOLS!!!");
 
-            case "youGuessIt":
+            case "youGuessedIt":
                 return String.format("YOU GOT IT!");
 
             case "guessTooLow":
@@ -430,7 +428,8 @@ public class MainActivity extends AppCompatActivity {
     private void endGameResults(){
         randomNumberTextView.setVisibility(View.VISIBLE);
         randomNumberTextView.setText(String.valueOf(randomNumber));
-        showTemporaryMessage(randomNumberTextView,4000);
+        clearNumberOfTriesRunnable = showTemporaryMessage(numberOfTriesTextField,4000,clearNumberOfTriesRunnable);
+        clearRandomNumberTask = showTemporaryMessage(randomNumberTextView,4000,clearRandomNumberTask);
         howManyGuesses();
         gameStatus = GameStatus.GAME_OVER;
         int winnerImage = decideWhichImageToUse(winnerImages);
