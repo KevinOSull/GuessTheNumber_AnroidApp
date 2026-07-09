@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
         guessButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                System.out.println("you clicked me ");
                 startGame(v);
             }
         });
