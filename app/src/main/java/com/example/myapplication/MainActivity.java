@@ -46,10 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private Button[] rangeButtons;
     private TextView[] labels;
     private TextView difficultySelected;
-    private int[] gameImages = new int[]{R.drawable.trophy,R.drawable.loser};
     private int[] winnerImages = new int[]{R.drawable.trophy,R.drawable.winner2};
     private int[] loserImages = new int[]{R.drawable.loser,R.drawable.loser2};
-    private String[] difficultyModes = new String[]{"Easy","Med","Hard","Ext"};
     private int[] rangeLevels = new int[]{MAX_RANGE_TEN,MAX_RANGE_TWENTY,MAX_RANGE_FIFTY,MAX_RANGE_ONE_HUNDRED};
     private int[] difficultyLevels = new int[]{EASY_GAME_MODE,MEDIUM_GAME_MODE,HARD_GAME_MODE,EXTREME_HARD_GAME_MODE};
     private int[] buttonDifficultyLevels = new int[]{BUTTON_ONE,BUTTON_TWO,BUTTON_THREE,BUTTON_FOUR};
@@ -73,13 +71,9 @@ public class MainActivity extends AppCompatActivity {
     private int level;
     private int turns;
     private int randomNumber;
-    private int guessRange;
-    private int guessRangeCount;
     private int guessMin = 1;
     private int selectedRange = 0;
-    private Runnable clearLastTask;
     private Runnable clearLastImage;
-
     private Runnable clearFeedBackTask;
     private Runnable clearRandomNumberTask;
     private Runnable clearErrorTask;
@@ -239,7 +233,6 @@ public class MainActivity extends AppCompatActivity {
         Map<String,Boolean> errorMessages = new LinkedHashMap<>();
         errorMessages.put(getMessage("emptyInput"),isInputEmpty());
         errorMessages.put(getMessage("outOfRangeGuess"),isGuessOutOfRange(guessText));
-        errorMessages.put(getMessage("invalidNumber"),isGuessValidNumber());
         for(Map.Entry<String,Boolean>entry:errorMessages.entrySet()){
             if(entry.getValue()){
                 setGameMessage(errorMessagesTextField,entry.getKey());
@@ -250,9 +243,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Runnable showTemporaryMessage(TextView textView,int duration, Runnable runnable){
-        if(runnable != null){
-            textView.removeCallbacks(runnable);
-        }
+        textView.removeCallbacks(runnable);
         Runnable newTask = new Runnable() {
             @Override
             public void run() {
@@ -305,10 +296,6 @@ public class MainActivity extends AppCompatActivity {
         Integer guess = tryParseGuess(guessText);
         return guess == null || guess < guessMin || guess > selectedRange;
     }
-
-    private boolean isGuessValidNumber(){
-        return true;
-    }
     private void difficultyGameActionListener(Button button){
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -328,10 +315,7 @@ public class MainActivity extends AppCompatActivity {
     private void setRange(final int RANGE_VALUE){
         selectedRange = RANGE_VALUE;
         displayRange(rangeTextView,RANGE_VALUE);
-        //randomNumber = getRandomNumber(selectedRange);
         displayRandomNumber();
-        System.out.println(selectedRange);
-        System.out.println(randomNumber);
         lockInGuessingRange();
     }
 
@@ -393,11 +377,6 @@ public class MainActivity extends AppCompatActivity {
         view.setText(message);
         return view;
     }
-
-    /*private int getRandomImage(int[]arr){
-        return RAND_GENERATOR.nextInt(arr.length);
-    }*/
-
     private int decideWhichImageToUse(int[]arr){
         if(arr.length == 0){
             return R.drawable.fallbackimage;
