@@ -267,22 +267,22 @@ public class MainActivity extends AppCompatActivity {
     private String getMessage(String message){
         switch(message){
             case "emptyInput":
-                return String.format("YOU MUST ENTER A GUESS!!");
+                return "YOU MUST ENTER A GUESS!!";
 
             case "outOfRangeGuess":
-                return String.format("GUESS IS OUT OF RANGE OF SELECTED RANGE SELECTED!");
+                return "GUESS IS OUT OF RANGE OF SELECTED RANGE SELECTED!";
 
             case "invalidNumber":
-                return String.format("NUMBERS ONLY! NO LETTERS OR SYMBOLS!!!");
+                return "NUMBERS ONLY! NO LETTERS OR SYMBOLS!!!";
 
             case "youGuessedIt":
-                return String.format("YOU GOT IT!");
+                return "YOU GOT IT!";
 
             case "guessTooLow":
-                return String.format("GUESS IS TO LOW!");
+                return "GUESS IS TO LOW!";
 
             case "guessTooHigh":
-                return String.format("GUESS IS TO HIGH! ");
+                return "GUESS IS TO HIGH! ";
         }
         return message;
     }
