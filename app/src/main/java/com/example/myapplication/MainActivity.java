@@ -272,9 +272,6 @@ public class MainActivity extends AppCompatActivity {
             case "outOfRangeGuess":
                 return "GUESS IS OUT OF RANGE OF SELECTED RANGE SELECTED!";
 
-            case "invalidNumber":
-                return "NUMBERS ONLY! NO LETTERS OR SYMBOLS!!!";
-
             case "youGuessedIt":
                 return "YOU GOT IT!";
 
