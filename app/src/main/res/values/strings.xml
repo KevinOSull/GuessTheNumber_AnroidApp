@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="error_empty_input">YOU MUST ENTER A GUESS!!!!</string>
+    <string name="error_guess_out_of_range">GUESS IS OUT OF RANGE!!!</string>
+    <string name="msg_you_guessed_it">YOU GOT IT!</string>
+    <string name="msg_guess_is_too_low">GUESS IS TOO LOW!!!</string>
+    <string name="msg_guess_is_too_high">GUESS IS TOO HIGH!!!</string>
+    <string name="msg_number_of_guesses">It took you %1$d guesses!</string>
+    <string name="msg_game_over">GAME OVER!!</string>
+    <string name="msg_you_win">YOU WIN!!</string>
 </resources>
