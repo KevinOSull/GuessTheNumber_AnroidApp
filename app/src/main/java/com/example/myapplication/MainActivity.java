@@ -40,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView errorMessagesTextField;
     private TextView numberOfTriesTextField;
     private TextView feedbackTextField;
+    private TextView gameStatusMessageTextField;
     private ImageView gameResultImageView;
+
     private EditText getGuess;
     private Button[] levelButtons;
     private Button[] rangeButtons;
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     private Runnable clearRandomNumberTask;
     private Runnable clearErrorTask;
     private Runnable clearNumberOfTriesRunnable;
+    private Runnable endGameMessage;
     private GameStatus gameStatus = GameStatus.GAME_IN_PROGRESS;
 
     @Override
@@ -166,30 +169,13 @@ public class MainActivity extends AppCompatActivity {
         getGuess.setText("");
     }
     private void startGame(View v){
-        boolean isValid = isDataValid();
-        if(!isValid){
-            getErrorChecks();
-        }else{
-            checkGuess();
+        if(!getErrorChecks()){
+            String guessText = getGuess.getText().toString();
+            int guess = Integer.parseInt(guessText);
+            checkGuess(guess);
+            upDateUi(guess);
         }
     }
-
-    public boolean isDataValid(){
-        String guessText = getGuess.getText().toString();
-        if(guessText.trim().isEmpty()){
-            return false;
-        }
-
-        if(isGuessOutOfRange(guessText)){
-            return false;
-        }
-
-        if(tryParseGuess(guessText) == null){
-            return false;
-        }
-        return true;
-    }
-
     private Integer tryParseGuess(String text) {
         try {
             return Integer.parseInt(text);
@@ -198,18 +184,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void checkGuess(){
-        String guessText = getGuess.getText().toString();
-        int guess = Integer.parseInt(guessText);
-        Map<String,Boolean>checkGameStatus = new LinkedHashMap<>();
-        checkGameStatus.put(getMessage("youGuessedIt"),hasNumberBeenGuessed(guess));
-        checkGameStatus.put(getMessage("guessTooLow"),isNumberGuessedTooLow(guess));
-        checkGameStatus.put(getMessage("guessTooHigh"),isNumberGuessedTooHigh(guess));
-        for(Map.Entry<String,Boolean>entry:checkGameStatus.entrySet()){
+    private void checkGuess(int guess){
+        Map<Integer,Boolean>checkGameStatus = new LinkedHashMap<>();
+        checkGameStatus.put(R.string.msg_you_guessed_it,hasNumberBeenGuessed(guess));
+        checkGameStatus.put(R.string.msg_guess_is_too_low,isNumberGuessedTooLow(guess));
+        checkGameStatus.put(R.string.msg_guess_is_too_high,isNumberGuessedTooHigh(guess));
+        for(Map.Entry<Integer,Boolean>entry:checkGameStatus.entrySet()){
             if(entry.getValue()){
-                setGameMessage(feedbackTextField,entry.getKey());
+                String message = getString(entry.getKey());
+                setGameMessage(feedbackTextField,message);
                 clearFeedBackTask = showTemporaryMessage(feedbackTextField,3000,clearFeedBackTask);
-                upDateUi(guess);
                 break;
             }
         }
@@ -227,18 +211,20 @@ public class MainActivity extends AppCompatActivity {
         return guess < randomNumber;
     }
 
-    private void getErrorChecks(){
+    private boolean getErrorChecks(){
         String guessText = getGuess.getText().toString();
-        Map<String,Boolean> errorMessages = new LinkedHashMap<>();
-        errorMessages.put(getMessage("emptyInput"),isInputEmpty());
-        errorMessages.put(getMessage("outOfRangeGuess"),isGuessOutOfRange(guessText));
-        for(Map.Entry<String,Boolean>entry:errorMessages.entrySet()){
+        Map<Integer,Boolean> errorMessages = new LinkedHashMap<>();
+        errorMessages.put(R.string.error_empty_input,isInputEmpty());
+        errorMessages.put(R.string.error_guess_out_of_range,isGuessOutOfRange(guessText));
+        for(Map.Entry<Integer,Boolean>entry:errorMessages.entrySet()){
             if(entry.getValue()){
-                setGameMessage(errorMessagesTextField,entry.getKey());
+                String message = getString(entry.getKey());
+                setGameMessage(errorMessagesTextField,message);
                 clearErrorTask = showTemporaryMessage(errorMessagesTextField,3000,clearErrorTask);
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     private Runnable showTemporaryMessage(TextView textView,int duration, Runnable runnable){
@@ -261,26 +247,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         imageView.postDelayed(clearLastImage,5000);
-    }
-
-    private String getMessage(String message){
-        switch(message){
-            case "emptyInput":
-                return "YOU MUST ENTER A GUESS!!";
-
-            case "outOfRangeGuess":
-                return "GUESS IS OUT OF RANGE OF SELECTED RANGE SELECTED!";
-
-            case "youGuessedIt":
-                return "YOU GOT IT!";
-
-            case "guessTooLow":
-                return "GUESS IS TO LOW!";
-
-            case "guessTooHigh":
-                return "GUESS IS TO HIGH! ";
-        }
-        return message;
     }
 
     private boolean isInputEmpty(){
@@ -417,13 +383,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayOutcomeVisuals(){
+        String youWinMessage = getString(R.string.msg_you_win);
+        printEndGameMessage(youWinMessage);
         int winnerImage = decideWhichImageToUse(winnerImages);
         displayEndGameImage(winnerImage);
         showTemporaryImage(gameResultImageView);
+        endGameMessage = showTemporaryMessage(gameStatusMessageTextField,5000,endGameMessage);
     }
 
     private void howManyGuesses(){
-        numberOfTriesTextField.setText("It took you " + guessCount + " number of guesses! ");
+        String message = getString(R.string.msg_number_of_guesses,guessCount);
+        numberOfTriesTextField.setText(message);
     }
 
     private void upDateGame(){
@@ -432,14 +402,21 @@ public class MainActivity extends AppCompatActivity {
         checkTurns();
     }
 
+    private void printEndGameMessage(String message){
+        gameStatusMessageTextField.setText(message);
+    }
+
     private void checkTurns(){
         if(level == 0){
             gameStatus = GameStatus.GAME_OVER;
+            String gameOverMessage = getString(R.string.msg_game_over);
+            printEndGameMessage(gameOverMessage);
             int loserImage = decideWhichImageToUse(loserImages);
             displayEndGameImage(loserImage);
             showTemporaryImage(gameResultImageView);
             resetButton();
             randomNumber = getRandomNumber(selectedRange);
+            endGameMessage = showTemporaryMessage(gameStatusMessageTextField,5000,endGameMessage);
         }
     }
 
@@ -453,6 +430,8 @@ public class MainActivity extends AppCompatActivity {
         twentyRangeButton = findViewById(R.id.twenty_range_button);
         fiftyRangeButton = findViewById(R.id.fifty_range_button);
         hundredRangeButton = findViewById(R.id.hundred_range_button);
+
+        gameStatusMessageTextField = findViewById(R.id.game_message_status);
 
         easyTextField = findViewById(R.id.easy_text_field);
         mediumTextField = findViewById(R.id.medium_text_field);
